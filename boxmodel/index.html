@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/design.css">
+  <link rel="shortcut icon" href="./img/favicon.gif" type="image/x-icon">
   <title>Box mOdel</title>
   <script src="./js/boxmodel.js" defer></script>
 </head>
@@ -45,16 +46,49 @@
         </p>
       </fieldset>
     </div>
+
     <code>
       <pre>
 .box {
   <span class="style-property">width</span>: <span class="style-value">250px</span>;
   <span class="style-property">padding</span>: <span class="style-value">25px</span>;
   <span class="style-property">border</span>: <span class="style-value">10px solid #7e7454</span>;
-  <span class="style-property">margin</span>: <span class="style-value">25px</span>;
+  <span class="style-property">margin</span>: <span class="style-value">10px</span>;
   <span class="style-property">box-sizing</span>: <span class="style-value">content-box</span>;
 }</pre>
     </code>
+
+    <div class="box_model">
+
+      <div class="margin_box">
+        <span class="legend">margin</span>
+        <span class="value top">10</span>
+        <span class="value right">10</span>
+        <span class="value bottom">10</span>
+        <span class="value left">10</span>
+
+        <div class="border_box">
+          <span class="legend">border</span>
+          <span class="value top">10</span>
+          <span class="value right">10</span>
+          <span class="value bottom">10</span>
+          <span class="value left">10</span>
+
+          <div class="padding_box">
+            <span class="legend">padding</span>
+            <span class="value top">25</span>
+            <span class="value right">25</span>
+            <span class="value bottom">25</span>
+            <span class="value left">25</span>
+
+            <div class="content_box">
+              250 x 305
+            </div><!--content_box -->
+          </div><!--padding_box -->
+        </div><!--border_box -->
+      </div><!--margin_box -->
+     </div><!--box_model -->
+
   </header>
 
   <main>
@@ -71,11 +105,12 @@
         <p>Avec <span class="code">box-sizing: content-box;</span> les marges internes (padding) et l'épaisseur des bordures S'AJOUTENT à la dimension du bloc.</p>
         <p>Ex. Si le bloc est défini comme suit
         <pre class="code">width: 100px;
+padding: 15px;
 border-width: 10px;
-padding: 15px;</pre>
+</pre>
         La largeur totale du bloc sera alors de<br>
         width + padding-left + padding-right + border-left + border-right, soit<br>
-        <span class="calculBs">100 + 10 + 10 + 15 + 15 = 150px !</span></p>
+        <span class="calculBs">100 + 15 + 15 + 10 + 10 = 150px !</span></p>
       </div>
 
       <div class="box inactive">

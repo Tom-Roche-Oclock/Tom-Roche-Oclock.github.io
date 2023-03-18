@@ -1,4 +1,4 @@
-// Made with 💖 Par Tom, pour O'Clock 
+// Made with 💖 by Tom, pour O'Clock 
 
 console.log('App start !')
 
@@ -14,10 +14,16 @@ const allBoxesElements = document.querySelectorAll('.box')
 const codeElement = document.querySelector('pre')
 const calculBsElement = document.querySelector('.calculBs')
 
+const bmAllMarginValuesElement = document.querySelectorAll('.margin_box > .value')
+const bmAllPaddingValuesElement = document.querySelectorAll('.padding_box > .value')
+const bmAllBorderValuesElement = document.querySelectorAll('.border_box > .value')
+const bmContentElement = document.querySelector('.content_box')
+
 function changeBoxStyle(style, value) {
   boxStyle[style] = value
   changeCode()
   applyBoxStyle()
+  changeBoxModelValue()
 
   if (boxStyle.boxSizing === 'content-box') {
     document.querySelector('.box:nth-child(4)').classList.add('inactive')
@@ -47,6 +53,22 @@ function applyBoxStyle() {
     box.style.margin = boxStyle.margin + 'px'
     box.style.boxSizing = boxStyle.boxSizing
   });
+}
+
+function changeBoxModelValue() {
+  bmAllMarginValuesElement.forEach(value => value.textContent = (boxStyle.margin === '0' ? '-' : boxStyle.margin))
+  bmAllPaddingValuesElement.forEach(value => value.textContent = (boxStyle.padding === '0' ? '-' : boxStyle.padding))
+  bmAllBorderValuesElement.forEach(value => value.textContent = (boxStyle.border === '0' ? '-' : boxStyle.border))
+
+  if (boxStyle.boxSizing === 'content-box') {
+    const width = boxStyle.width
+    const height = Math.floor(boxStyle.width * 1.22)
+    bmContentElement.textContent = `${width} x ${height}`
+  } else {
+    const width = boxStyle.width - boxStyle.padding * 2 - boxStyle.border * 2
+    const height = Math.floor(width * 1.22)
+    bmContentElement.textContent = `${width} x ${height}`
+  }
 }
 
 const widthSliderInputElement = document.querySelector('#widthSlider')

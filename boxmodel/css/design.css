@@ -49,6 +49,9 @@ h1 {
   align-items: center;
   gap: 1rem;
 }
+.settings [type="range"] {
+  width:60%;
+}
 
 code {
   margin-bottom: 1rem;

@@ -23,6 +23,7 @@ header {
   padding: 2rem;
 }
 
+
 h1 {
   margin-bottom: 1rem;
   text-align: center;
@@ -34,6 +35,7 @@ h1 {
   gap: .5rem;
   margin-bottom: 1rem;
 }
+
 .settings fieldset {
   padding: 1rem;
   border: solid 1px rgba(255,255,255,.2);
@@ -67,6 +69,22 @@ pre {
 
 pre .style-property { color: cornflowerblue;}
 pre .style-value { color: coral;}
+
+@media screen and (max-height:750px) {
+  header {
+    padding: 1rem;
+  }
+  .settings {
+    gap: .3em;
+    margin-bottom: .3rem;
+  }
+  .settings fieldset {
+    padding: .5em;
+  }
+  pre {
+    padding: .3rem;
+  }
+}
 
 main {
   width: calc(100vw - 20rem);

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qui est-ce QL ? 🔎</title>
+    <link rel="icon" href="./img/sqlgame-favicon.png" type="image/png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.cyan.min.css">
+    <link rel="stylesheet" href="./css/prism.css">
+    <script type="module" src="./js/prism.js"></script>
+    <script type="module" crossorigin src="./assets/index-CVQGMN-W.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BIZf3_4s.css">
+  </head>
+  <body class="game-pannel-open">
+    <div id="app" class="">
+
+      <header>
+        <h1 class="site-title">
+          <img src="./img/sqlgame-favicon.png" alt="" class="site-logo">
+          <span class="site-title-text">Qui est-ce QL ?</span>
+        </h1>
+      </header>
+
+      <main id="students-list"></main>
+
+      <aside id="settings" class="">
+        <button id="settings-button" title="Paramètres">
+          <i class="fas fa-cog"></i>
+        </button>
+
+        <div id="pannel">
+          <h2 class="settings-title">Paramètres</h2>
+
+          <label class="setting">
+            <input name="setting-input-type" type="checkbox" role="switch" />
+            Champ de requete multi-ligne
+          </label>
+
+          <label class="setting">
+            <input name="setting-result" type="checkbox" role="switch" />
+            Cacher les résultats inactifs
+          </label>
+
+        </div>
+      </aside>
+
+      <aside id="game">
+        
+        <button id="game-button" title="Jouer !">
+          <i class="fas fa-gamepad"></i>
+        </button>
+
+        <div class="scrollable">
+
+        
+
+        <section>
+          <h2>Jouer !</h2>
+          <p>Répondez aux questions en un minimum de requetes SQL</p>
+        </section>
+
+        <section>
+        <h3>Structure des données</h3>
+        <p>Il y'a 2 tables disponibles : <strong>student</strong> et <strong>promo</strong></p>
+        <p>Menez votre enquete pour découvrir leurs structures !</p>
+
+        <h3>Astuces</h3>
+        <ul>
+          <li>Les noms de champs et de table sont sensibles à la casse</li>
+          <li>Pas besoin de guillemets autour des champs ou des tables dans cette simulation</li>
+          <li>Les données injectées de type texte doivent etre entourées de guillemets</li>
+          <li>Forcez-vous à utiliser les majuscules pour les commandes SQL (convention) meme si ça n'est pas obligatoire</li>
+          <li>Pour que l'affichage filtre les étudiants il est nécéssaire que votre requête renvoie une réponse contenant l'id de l'étudiant</li>
+        </ul>
+
+        <h3>Exemple de requêtes</h3>
+<pre><code class="language-sql">-- Tous les étudiants de 29 ans
+SELECT * FROM student WHERE age = 29;</code></pre>
+
+<pre><code class="language-sql">-- L'étudiant qui se prénomme "Julianne"
+SELECT * FROM student WHERE firstname = "Julianne";</code></pre>
+
+<pre><code class="language-sql">-- L'id et Le prénom des étudiants portant un couvre-chef
+SELECT id, firstname FROM student WHERE hasHat;</code></pre>
+
+<pre><code class="language-sql">-- Trouver les couleurs d'yeux
+-- et le nombre d'étudiants les portant
+SELECT
+  eyeColor AS Couleur_d_oeil,
+  COUNT(id) AS Nombre
+FROM
+  student
+GROUP BY
+  eyeColor;</code></pre>
+  </section>
+
+  <section>
+    <h3>Exercices</h3>
+
+    <h4>EXO 1</h4>
+    <p><strong>On cherche :</strong><br>le plus grand étudiant de plus de 30 ans avec un tatouage</p>
+
+    <details>
+      <summary>Solution</summary>
+      <p>Il faut filtrer les étudiants de plus de 30 ans et avec un tatouage, puis les trier par taille décroissante, puis n'en garder qu'un</p>
+      <pre><code class="language-sql">
+SELECT * 
+FROM student 
+WHERE age > 30 
+AND hasTatoo
+ORDER BY height DESC
+LIMIT 1;
+      </code></pre>
+      <p>✅ Réponse : Thais Milward</p>
+    </details>
+
+    <h4>EXO 2</h4>
+    <p><strong>On cherche :</strong><br> Le plus petit étudiant aux yeux marrons sans piercing</p>
+
+    <details>
+      <summary>Solution</summary>
+      <p>Il faut filtrer les étudiants aux yeux marrons sans piercing, puis les trier par taille croissante, puis n'en garder qu'un</p>
+      <pre><code class="language-sql">
+SELECT *
+FROM student
+WHERE eyeColor = "Brown"
+AND NOT hasPiercing
+ORDER BY height ASC
+LIMIT 1;
+      </code></pre>
+      <p>✅ Réponse : Christopher Defraine</p>
+    </details>
+
+    <h4>EXO 3</h4>
+    <p><strong>On cherche :</strong><br> Les étudiantes de la promo Electron</p>
+
+    <details>
+      <summary>Solution</summary>
+      <p>Il faut filtrer les étudiantes de la promo Electron, on a donc besoin de faire une jointure entre les tables student et promo, et de ne garder que les femmes</p>
+      <pre><code class="language-sql">
+-- solution 1
+SELECT student.*
+FROM student
+JOIN promo ON promo.id = student.promoId
+WHERE promo.name = "Electron"
+AND student.gender = "Female";
+
+-- solution 2 (sortie plus complète)
+SELECT
+  student.id,
+  CONCAT(student.firstname, " ", student.lastname) AS Etudiante,
+  promo.name AS Promo
+FROM student
+JOIN promo
+ON promo.id = student.promoId
+WHERE promo.name LIKE "electron"
+AND student.gender LIKE "female";
+      </code></pre>
+      <p>✅ Réponse : Megan Tredgold, Lily-Rose Lindley, Geri Wagenen, Stéphanie Jowers</p>
+    </details>
+
+    <h4>EXO 4 - Final 🏁</h4>
+    <p><strong>On cherche le coupable d'un vilain bug informatique !</strong></p>
+    <p>
+      - le (ou la) coupable est dans une promo de 2021<br>
+      - le coupable n'a pas de lunettes<br>
+      - le coupable mesure plus de 165cm<br>
+      - le coupable habite dans une ville contenant un "e"<br>
+      - le coupable habite au numéro de rue le plus bas
+    </p>
+
+    <details>
+      <summary>Solution</summary>
+      <p>Il faut joindre les tables student et promo, filtrer les étudiants de promos 2021, sans lunettes, de plus de 165cm, habitant dans une ville contenant un "e", puis les trier par adresse croissante, puis n'en garder qu'un</p>
+      <pre><code class="language-sql">
+SELECT
+  student.id,
+  CONCAT(student.firstname, " ", student.lastname) AS Coupable,
+  promo.name AS Nom_De_Promo
+FROM student
+JOIN promo ON promo.id = student.promoId
+WHERE
+  promo.year = 2021
+  AND NOT student.hasGlasses
+  AND student.height > 165
+  AND student.city LIKE "%e%"
+ORDER BY student.address ASC
+LIMIT 1;
+      </code></pre>
+      <p>✅ Réponse : Andréa Giovannini</p>
+    </details>
+
+    <h4>EXO Bonus 🎁 </h4>
+
+    <p>On cherche le nom d'une <strong>celebre anarchiste française</strong>.<br>
+
+      Pour la trouver, il faut assembler les 4 premières lettres du nom de famille des étudiants aux cheveux bleus ou roux, triés par age décroissant.</p>
+      <details>
+        <summary>Solution</summary>
+        <pre><code class="language-sql">
+SELECT
+  id,
+  SUBSTR(lastname,1,4)
+FROM
+  student
+WHERE
+  hairColor LIKE "blue"
+  OR hairColor LIKE "red"
+ORDER BY
+  age DESC;
+        </code></pre>
+        <p>✅ Réponse : <a href="https://fr.wikipedia.org/wiki/Louise_Michel" target="_blank">Louise Michel</a></p>
+      </details>
+      </section>
+
+      <p style="text-align: center;"><small>Tom - Pour O'Clock 2025</small></p>
+
+    </div>
+      </aside>
+
+      <form id="input" method="post" class="inactive">
+        <div role="group" id="input-group">
+          
+          <input type="text" name="query" id="query-input" placeholder="Requête SQL, ex: SELECT * FROM student">
+
+          <textarea name="query" id="query-textarea" placeholder="Requête SQL, ex: SELECT * FROM student" rows="1"></textarea>
+
+          <button id="submit">Exécuter</button>
+        </div>
+        <input type="checkbox" name="switch" id="switch" role="switch" title="Cacher les resultats inactifs">
+      </form>
+
+      <h2>Résultat brut</h2>
+      <pre><code id="data"></code></pre>
+
+    </div>
+
+
+    <!-- template student  -->
+    <template id="student-template">
+      <article class="student" data-id="">
+        <div class="face">
+          <img src="" alt="" class="avatar">
+          <h2 class="name"></h2>
+          <p class="age"></p>
+          <p class="city"></p>
+        </div>
+        <div class="back"></div>
+      </article>
+    </template>
+
+  </body>
+</html>
